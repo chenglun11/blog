@@ -1,0 +1,100 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+	activeTag?: string;
+}
+
+const { activeTag } = Astro.props;
+
+const posts = await getCollection('blog');
+const tagCounts = new Map<string, number>();
+posts.forEach((post) => {
+	post.data.tags.forEach((tag: string) => {
+		tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
+	});
+});
+
+const sortedTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
+---
+
+{sortedTags.length > 0 && (
+	<aside class="tag-cloud">
+		<h4 class="tag-cloud-title">标签</h4>
+		<div class="tag-list">
+			<a
+				href="/blog/"
+				class:list={['tag-btn', { active: !activeTag }]}
+			>
+				全部
+			</a>
+			{sortedTags.map(([tag, count]) => (
+				<a
+					href={`/blog/?tag=${encodeURIComponent(tag)}`}
+					class:list={['tag-btn', { active: activeTag === tag }]}
+				>
+					{tag}
+					<span class="tag-count">{count}</span>
+				</a>
+			))}
+		</div>
+	</aside>
+)}
+
+<style>
+	.tag-cloud {
+		padding-left: 1.5em;
+		border-left: 1px solid rgb(var(--sand-dark));
+	}
+	.tag-cloud-title {
+		font-size: 0.82em;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: rgb(var(--stone));
+		margin: 0 0 1em;
+		font-weight: 600;
+	}
+	.tag-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5em;
+	}
+	.tag-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35em;
+		font-size: 0.82em;
+		padding: 0.35em 0.75em;
+		background: rgb(var(--sand));
+		color: rgb(var(--stone));
+		border-radius: 6px;
+		text-decoration: none;
+		transition: all var(--transition);
+		white-space: nowrap;
+	}
+	.tag-btn:hover {
+		background: var(--jade-glow);
+		color: var(--jade);
+	}
+	.tag-btn.active {
+		background: var(--jade);
+		color: white;
+	}
+	.tag-btn.active .tag-count {
+		opacity: 0.8;
+	}
+	.tag-count {
+		font-size: 0.85em;
+		opacity: 0.6;
+	}
+
+	@media (max-width: 960px) {
+		.tag-cloud {
+			padding-left: 0;
+			border-left: none;
+			padding-bottom: 1.5em;
+			margin-bottom: 1.5em;
+			border-bottom: 1px solid rgb(var(--sand-dark));
+		}
+	}
+</style>

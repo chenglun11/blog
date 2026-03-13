@@ -5,110 +5,279 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
+import TagCloud from '../../components/TagCloud.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 
-const posts = (await getCollection('blog')).sort(
+const allPosts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
+		<BaseHead title={`文章 - ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
 	</head>
 	<body>
 		<Header />
-		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-		</main>
+		<div class="layout-wrapper">
+			<main>
+				<div class="page-header animate-in">
+					<h1>文章</h1>
+					<p class="post-count">共 <span id="post-count">{allPosts.length}</span> 篇</p>
+				</div>
+
+				<div class="mobile-sidebar">
+					<TagCloud />
+				</div>
+
+				<div class="posts-grid" id="posts-grid">
+					{allPosts.map((post, i) => (
+						<a href={`/blog/${post.id}/`} class="card animate-in" style={`animation-delay: ${0.1 + i * 0.08}s`} data-tags={JSON.stringify(post.data.tags)}>
+							{post.data.heroImage && (
+								<div class="card-image">
+									<Image width={720} height={400} src={post.data.heroImage} alt="" />
+								</div>
+							)}
+							<div class="card-body">
+								<time class="card-date">
+									<FormattedDate date={post.data.pubDate} />
+								</time>
+								<h2 class="card-title">{post.data.title}</h2>
+								<p class="card-desc">{post.data.description}</p>
+								{post.data.tags.length > 0 && (
+									<div class="card-tags">
+										{post.data.tags.map((tag: string) => (
+											<span class="card-tag">{tag}</span>
+										))}
+									</div>
+								)}
+							</div>
+						</a>
+					))}
+				</div>
+
+				<p class="no-results" id="no-results" style="display: none;">
+					没有找到匹配的文章。
+				</p>
+			</main>
+
+			<div class="sidebar">
+				<div class="sidebar-sticky">
+					<TagCloud />
+				</div>
+			</div>
+		</div>
 		<Footer />
+
+		<script>
+			function initTagFilter() {
+				const params = new URLSearchParams(window.location.search);
+				const activeTag = params.get('tag');
+
+				// Highlight active tag button
+				document.querySelectorAll('.tag-btn').forEach((btn) => {
+					btn.classList.remove('active');
+					const href = btn.getAttribute('href') || '';
+					if (activeTag) {
+						if (href.includes(`tag=${encodeURIComponent(activeTag)}`)) {
+							btn.classList.add('active');
+						}
+					} else {
+						if (href === '/blog/') {
+							btn.classList.add('active');
+						}
+					}
+				});
+
+				// Filter posts
+				const cards = document.querySelectorAll<HTMLAnchorElement>('#posts-grid .card');
+				let visibleCount = 0;
+
+				cards.forEach((card) => {
+					if (!activeTag) {
+						card.style.display = '';
+						visibleCount++;
+					} else {
+						const tags: string[] = JSON.parse(card.dataset.tags || '[]');
+						if (tags.includes(activeTag)) {
+							card.style.display = '';
+							visibleCount++;
+						} else {
+							card.style.display = 'none';
+						}
+					}
+				});
+
+				const countEl = document.getElementById('post-count');
+				if (countEl) countEl.textContent = String(visibleCount);
+
+				const noResults = document.getElementById('no-results');
+				if (noResults) noResults.style.display = visibleCount === 0 ? '' : 'none';
+			}
+			initTagFilter();
+			document.addEventListener('astro:after-swap', initTagFilter);
+		</script>
+
+		<style>
+			.layout-wrapper {
+				max-width: 1100px;
+				width: 100%;
+				margin: 0 auto;
+				padding: 2em 1.5em 3em;
+				display: grid;
+				grid-template-columns: 1fr 220px;
+				gap: 3em;
+			}
+			main {
+				max-width: 100%;
+				width: 100%;
+				padding: 0;
+			}
+			.sidebar {
+				padding-top: 0.5em;
+			}
+			.sidebar-sticky {
+				position: sticky;
+				top: 80px;
+			}
+			.mobile-sidebar {
+				display: none;
+			}
+
+			.page-header {
+				margin-bottom: 2.5em;
+				display: flex;
+				align-items: baseline;
+				gap: 0.8em;
+			}
+			.page-header h1 {
+				font-size: 1.6em;
+				margin: 0;
+			}
+			.page-header p {
+				font-size: 0.88em;
+				color: rgb(var(--stone));
+				margin: 0;
+			}
+
+			.posts-grid {
+				display: grid;
+				grid-template-columns: 1fr;
+				gap: 1.5em;
+			}
+			.card {
+				display: grid;
+				grid-template-columns: 240px 1fr;
+				gap: 1.8em;
+				padding: 1.5em;
+				background: rgb(var(--cream));
+				border: 1px solid rgb(var(--sand-dark));
+				border-radius: var(--radius-lg);
+				text-decoration: none;
+				transition: all var(--transition);
+			}
+			.card:hover {
+				box-shadow: var(--box-shadow-hover);
+				border-color: transparent;
+				transform: translateY(-2px);
+			}
+			.card-image {
+				overflow: hidden;
+				border-radius: var(--radius);
+				aspect-ratio: 3 / 2;
+			}
+			.card-image img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				border-radius: var(--radius);
+				transition: transform 0.5s var(--ease);
+			}
+			.card:hover .card-image img {
+				transform: scale(1.05);
+			}
+			.card-body {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				padding: 0.25em 0;
+			}
+			.card-date {
+				font-size: 0.82em;
+				color: rgb(var(--stone));
+				letter-spacing: 0.02em;
+				margin-bottom: 0.6em;
+			}
+			.card-title {
+				font-size: 1.25em;
+				color: rgb(var(--ink));
+				margin: 0 0 0.6em;
+				line-height: 1.4;
+				transition: color var(--transition);
+			}
+			.card:hover .card-title {
+				color: var(--jade);
+			}
+			.card-desc {
+				font-size: 0.9em;
+				color: rgb(var(--stone));
+				margin: 0;
+				line-height: 1.7;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+			.card-tags {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.4em;
+				margin-top: 0.6em;
+			}
+			.card-tag {
+				font-size: 0.75em;
+				padding: 0.15em 0.55em;
+				background: rgb(var(--sand));
+				color: rgb(var(--stone));
+				border-radius: 4px;
+			}
+
+			.no-results {
+				text-align: center;
+				color: rgb(var(--stone));
+				padding: 3em 0;
+			}
+
+			@media (max-width: 960px) {
+				.layout-wrapper {
+					display: block;
+					max-width: 880px;
+				}
+				.sidebar {
+					display: none;
+				}
+				.mobile-sidebar {
+					display: block;
+					margin-bottom: 2em;
+				}
+			}
+			@media (max-width: 720px) {
+				.layout-wrapper {
+					padding: 1.5em 1.25em 2em;
+				}
+				.card {
+					grid-template-columns: 1fr;
+					gap: 1em;
+					padding: 1.25em;
+				}
+				.card-image {
+					aspect-ratio: 16 / 9;
+				}
+				.card-title {
+					font-size: 1.1em;
+				}
+			}
+		</style>
 	</body>
 </html>

@@ -1,0 +1,113 @@
+---
+interface Heading {
+	depth: number;
+	slug: string;
+	text: string;
+}
+
+interface Props {
+	headings: Heading[];
+}
+
+const { headings } = Astro.props;
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{tocHeadings.length > 0 && (
+	<aside class="toc">
+		<nav>
+			<h4 class="toc-title">目录</h4>
+			<ul class="toc-list">
+				{tocHeadings.map((heading) => (
+					<li class={`toc-item depth-${heading.depth}`}>
+						<a href={`#${heading.slug}`} data-heading={heading.slug}>
+							{heading.text}
+						</a>
+					</li>
+				))}
+			</ul>
+		</nav>
+	</aside>
+)}
+
+<script>
+	function initTOC() {
+		const links = document.querySelectorAll<HTMLAnchorElement>('.toc-item a');
+		if (links.length === 0) return;
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						links.forEach((link) => link.classList.remove('active'));
+						const slug = entry.target.id;
+						const activeLink = document.querySelector(
+							`.toc-item a[data-heading="${slug}"]`
+						);
+						activeLink?.classList.add('active');
+					}
+				}
+			},
+			{ rootMargin: '0px 0px -70% 0px', threshold: 0 }
+		);
+
+		const headingIds = Array.from(links).map(
+			(link) => link.dataset.heading
+		);
+		headingIds.forEach((id) => {
+			if (id) {
+				const el = document.getElementById(id);
+				if (el) observer.observe(el);
+			}
+		});
+
+		// Set initial active state
+		if (links[0]) links[0].classList.add('active');
+	}
+	initTOC();
+	document.addEventListener('astro:after-swap', initTOC);
+</script>
+
+<style>
+	.toc {
+		padding-right: 1.5em;
+		border-right: 1px solid rgb(var(--sand-dark));
+	}
+	.toc-title {
+		font-size: 0.82em;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: rgb(var(--stone));
+		margin: 0 0 0.8em;
+		font-weight: 600;
+	}
+	.toc-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	.toc-item {
+		margin-bottom: 0.3em;
+	}
+	.toc-item.depth-3 {
+		padding-left: 1em;
+	}
+	.toc-item a {
+		display: block;
+		font-size: 0.82em;
+		color: rgb(var(--stone));
+		text-decoration: none;
+		padding: 0.2em 0.5em;
+		border-radius: 4px;
+		line-height: 1.5;
+		transition: all var(--transition);
+	}
+	.toc-item a:hover {
+		color: var(--jade);
+	}
+	.toc-item a.active {
+		color: var(--jade);
+		background: var(--jade-glow);
+		font-weight: 500;
+	}
+</style>

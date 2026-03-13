@@ -1,0 +1,197 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+// Group posts by year
+const postsByYear = posts.reduce<Record<number, typeof posts>>((acc, post) => {
+	const year = post.data.pubDate.getFullYear();
+	if (!acc[year]) acc[year] = [];
+	acc[year].push(post);
+	return acc;
+}, {});
+
+const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={`时间线 - ${SITE_TITLE}`} description="文章时间线归档" />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="page-header animate-in">
+				<h1>时间线</h1>
+				<p>共 {posts.length} 篇文章</p>
+			</div>
+
+			<div class="timeline">
+				{years.map((year, yi) => (
+					<div class="timeline-year animate-in" style={`animation-delay: ${0.1 + yi * 0.1}s`}>
+						<h2 class="year-label">{year}</h2>
+						<div class="timeline-items">
+							{postsByYear[year].map((post, pi) => (
+								<a href={`/blog/${post.id}/`} class="timeline-item animate-in" style={`animation-delay: ${0.15 + yi * 0.1 + pi * 0.06}s`}>
+									<div class="timeline-dot" />
+									<div class="timeline-content">
+										<time class="timeline-date">
+											<FormattedDate date={post.data.pubDate} />
+										</time>
+										<h3 class="timeline-title">{post.data.title}</h3>
+										<p class="timeline-desc">{post.data.description}</p>
+										{post.data.tags.length > 0 && (
+											<div class="timeline-tags">
+												{post.data.tags.map((tag: string) => (
+													<span class="timeline-tag">{tag}</span>
+												))}
+											</div>
+										)}
+									</div>
+								</a>
+							))}
+						</div>
+					</div>
+				))}
+			</div>
+		</main>
+		<Footer />
+
+		<style>
+			main {
+				max-width: 740px;
+				width: 100%;
+				padding: 2em 1.5em 3em;
+			}
+			.page-header {
+				margin-bottom: 2.5em;
+				display: flex;
+				align-items: baseline;
+				gap: 0.8em;
+			}
+			.page-header h1 {
+				font-size: 1.6em;
+				margin: 0;
+			}
+			.page-header p {
+				font-size: 0.88em;
+				color: rgb(var(--stone));
+				margin: 0;
+			}
+
+			.timeline {
+				position: relative;
+			}
+			.timeline-year {
+				margin-bottom: 2em;
+			}
+			.year-label {
+				font-size: 1.3em;
+				color: rgb(var(--ink));
+				margin: 0 0 1.2em;
+				padding-left: 1.8em;
+				position: relative;
+			}
+			.year-label::before {
+				content: '';
+				position: absolute;
+				left: 5px;
+				top: 50%;
+				transform: translateY(-50%);
+				width: 10px;
+				height: 10px;
+				background: var(--jade);
+				border-radius: 50%;
+			}
+
+			.timeline-items {
+				position: relative;
+				padding-left: 1.8em;
+				border-left: 2px solid rgb(var(--sand-dark));
+				margin-left: 9px;
+			}
+			.timeline-item {
+				display: block;
+				position: relative;
+				padding: 1em 1.4em;
+				margin-bottom: 0.5em;
+				border-radius: var(--radius);
+				text-decoration: none;
+				transition: all var(--transition);
+			}
+			.timeline-item:hover {
+				background: var(--jade-glow);
+			}
+			.timeline-dot {
+				position: absolute;
+				left: -2.35em;
+				top: 1.5em;
+				width: 8px;
+				height: 8px;
+				background: rgb(var(--sand-dark));
+				border-radius: 50%;
+				border: 2px solid rgb(var(--cream));
+				transition: background var(--transition);
+			}
+			.timeline-item:hover .timeline-dot {
+				background: var(--jade);
+			}
+			.timeline-date {
+				display: block;
+				font-size: 0.82em;
+				color: rgb(var(--stone));
+				margin-bottom: 0.3em;
+			}
+			.timeline-title {
+				font-size: 1.08em;
+				color: rgb(var(--ink));
+				margin: 0 0 0.4em;
+				line-height: 1.4;
+				transition: color var(--transition);
+			}
+			.timeline-item:hover .timeline-title {
+				color: var(--jade);
+			}
+			.timeline-desc {
+				font-size: 0.88em;
+				color: rgb(var(--stone));
+				margin: 0;
+				line-height: 1.6;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+			.timeline-tags {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.4em;
+				margin-top: 0.6em;
+			}
+			.timeline-tag {
+				font-size: 0.75em;
+				padding: 0.15em 0.6em;
+				background: rgb(var(--sand));
+				color: rgb(var(--stone));
+				border-radius: 4px;
+			}
+
+			@media (max-width: 720px) {
+				main {
+					padding: 1.5em 1.25em 2em;
+				}
+				.timeline-item {
+					padding: 0.8em 1em;
+				}
+			}
+		</style>
+	</body>
+</html>

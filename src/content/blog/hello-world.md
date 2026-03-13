@@ -3,6 +3,7 @@ title: '你好，世界：我的博客启程'
 description: '这是我博客的第一篇文章，记录建站的初衷和未来的写作方向。'
 pubDate: '2026-03-01'
 heroImage: '../../assets/blog-placeholder-1.jpg'
+tags: ['随笔', '博客']
 ---
 
 ## 为什么要写博客

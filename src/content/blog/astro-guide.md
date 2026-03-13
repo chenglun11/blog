@@ -3,6 +3,7 @@ title: 'Astro 入门：为什么它是博客的最佳选择'
 description: '深入了解 Astro 框架的核心特性，以及它为什么特别适合构建内容驱动的网站。'
 pubDate: '2026-03-03'
 heroImage: '../../assets/blog-placeholder-2.jpg'
+tags: ['Astro', '前端', '框架']
 ---
 
 ## Astro 是什么

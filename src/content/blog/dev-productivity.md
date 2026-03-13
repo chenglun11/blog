@@ -3,6 +3,7 @@ title: '开发者效率指南：我的工具箱'
 description: '分享我日常开发中使用的工具和工作流，帮助你提升编码效率。'
 pubDate: '2026-03-05'
 heroImage: '../../assets/blog-placeholder-4.jpg'
+tags: ['工具', '效率', 'Git']
 ---
 
 ## 编辑器与终端
