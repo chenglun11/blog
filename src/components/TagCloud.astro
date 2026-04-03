@@ -7,7 +7,7 @@ interface Props {
 
 const { activeTag } = Astro.props;
 
-const posts = await getCollection('blog');
+const posts = await getCollection('post');
 const tagCounts = new Map<string, number>();
 posts.forEach((post) => {
 	post.data.tags.forEach((tag: string) => {
@@ -23,14 +23,14 @@ const sortedTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 		<h4 class="tag-cloud-title">标签</h4>
 		<div class="tag-list">
 			<a
-				href="/blog/"
+				href="/post/"
 				class:list={['tag-btn', { active: !activeTag }]}
 			>
 				全部
 			</a>
 			{sortedTags.map(([tag, count]) => (
 				<a
-					href={`/blog/?tag=${encodeURIComponent(tag)}`}
+					href={`/post/?tag=${encodeURIComponent(tag)}`}
 					class:list={['tag-btn', { active: activeTag === tag }]}
 				>
 					{tag}

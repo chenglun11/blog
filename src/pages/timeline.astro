@@ -6,7 +6,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_TITLE } from '../consts';
 
-const posts = (await getCollection('blog')).sort(
+const posts = (await getCollection('post')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
@@ -40,7 +40,7 @@ const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
 						<h2 class="year-label">{year}</h2>
 						<div class="timeline-items">
 							{postsByYear[year].map((post, pi) => (
-								<a href={`/blog/${post.id}/`} class="timeline-item animate-in" style={`animation-delay: ${0.15 + yi * 0.1 + pi * 0.06}s`}>
+								<a href={`/post/${post.id}/`} class="timeline-item animate-in" style={`animation-delay: ${0.15 + yi * 0.1 + pi * 0.06}s`}>
 									<div class="timeline-dot" />
 									<div class="timeline-content">
 										<time class="timeline-date">

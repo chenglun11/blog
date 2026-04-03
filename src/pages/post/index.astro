@@ -8,7 +8,7 @@ import Header from '../../components/Header.astro';
 import TagCloud from '../../components/TagCloud.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 
-const allPosts = (await getCollection('blog')).sort(
+const allPosts = (await getCollection('post')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 ---
@@ -33,7 +33,7 @@ const allPosts = (await getCollection('blog')).sort(
 
 				<div class="posts-grid" id="posts-grid">
 					{allPosts.map((post, i) => (
-						<a href={`/blog/${post.id}/`} class="card animate-in" style={`animation-delay: ${0.1 + i * 0.08}s`} data-tags={JSON.stringify(post.data.tags)}>
+						<a href={`/post/${post.id}/`} class="card animate-in" style={`animation-delay: ${0.1 + i * 0.08}s`} data-tags={JSON.stringify(post.data.tags)}>
 							{post.data.heroImage && (
 								<div class="card-image">
 									<Image width={720} height={400} src={post.data.heroImage} alt="" />
@@ -84,7 +84,7 @@ const allPosts = (await getCollection('blog')).sort(
 							btn.classList.add('active');
 						}
 					} else {
-						if (href === '/blog/') {
+						if (href === '/post/') {
 							btn.classList.add('active');
 						}
 					}
