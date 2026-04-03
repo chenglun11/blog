@@ -11,6 +11,7 @@ import { defineConfig } from 'astro/config';
 // - Vercel: auto-detected via vercel.json. For SSR, add @astrojs/vercel
 //   and set output: 'server'. Static mode works out of the box.
 export default defineConfig({
-	site: 'https://chenglun11.github.io/blog',
+	site: 'https://chenglun11.github.io',
+	base: '/blog',
 	integrations: [mdx(), sitemap()],
 });
