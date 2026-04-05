@@ -1,6 +1,7 @@
 ---
 import { SITE_TITLE, NAV_LINKS } from '../consts';
 import HeaderLink from './HeaderLink.astro';
+import ThemeToggle from './ThemeToggle.astro';
 ---
 
 <header>
@@ -9,10 +10,13 @@ import HeaderLink from './HeaderLink.astro';
 			<span class="title-mark"></span>
 			{SITE_TITLE}
 		</a>
-		<div class="nav-links">
-			{NAV_LINKS.map(link => (
-				<HeaderLink href={`${import.meta.env.BASE_URL}${link.href}`}>{link.text}</HeaderLink>
-			))}
+		<div class="nav-right">
+			<div class="nav-links">
+				{NAV_LINKS.map(link => (
+					<HeaderLink href={`${import.meta.env.BASE_URL}${link.href}`}>{link.text}</HeaderLink>
+				))}
+			</div>
+			<ThemeToggle />
 		</div>
 	</nav>
 </header>
@@ -21,10 +25,10 @@ import HeaderLink from './HeaderLink.astro';
 		position: sticky;
 		top: 0;
 		z-index: 100;
-		background: rgba(252, 251, 249, 0.9);
+		background: rgba(var(--cream), 0.9);
 		backdrop-filter: blur(16px) saturate(1.2);
 		-webkit-backdrop-filter: blur(16px) saturate(1.2);
-		border-bottom: 1px solid rgba(235, 231, 226, 0.6);
+		border-bottom: 1px solid rgba(var(--sand-dark), 0.6);
 	}
 	nav {
 		display: flex;
@@ -50,12 +54,17 @@ import HeaderLink from './HeaderLink.astro';
 		display: inline-block;
 		width: 6px;
 		height: 6px;
-		background: var(--jade);
+		background: var(--accent);
 		border-radius: 50%;
 		flex-shrink: 0;
 	}
 	.site-title:hover {
-		color: var(--jade);
+		color: var(--accent);
+	}
+	.nav-right {
+		display: flex;
+		align-items: center;
+		gap: 0.4em;
 	}
 	.nav-links {
 		display: flex;

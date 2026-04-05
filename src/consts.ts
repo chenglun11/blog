@@ -7,6 +7,17 @@ export const SITE_AUTHOR = 'Max Li';
 export const SITE_LANG = 'zh-CN';          // 站点语言
 
 // ============================================================
+// 主题配置
+// ============================================================
+export const THEME = {
+	// 预设主题: 'jade' | 'blue' | 'purple' | 'orange'
+	preset: 'jade',
+	// 自定义颜色覆盖（可选，覆盖预设中的对应值）
+	// overrides: { light: { accent: '#ff0000' }, dark: { accent: '#ff6666' } },
+	overrides: {},
+};
+
+// ============================================================
 // 首页 Hero 区域
 // ============================================================
 export const HERO = {
@@ -22,7 +33,7 @@ export const HERO = {
 export const NAV_LINKS = [
 	{ text: '首页', href: '' },
 	{ text: '文章', href: 'post' },
-	{ text: '说说', href: 'moments' },
+	// { text: '说说', href: 'moments' },
 	{ text: '归档', href: 'archives' },
 	{ text: '友链', href: 'links' },
 	{ text: '关于', href: 'about' },

@@ -2,7 +2,8 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { SITE_TITLE, SITE_LANG, FRIENDS } from '../consts';
+import { SITE_TITLE, SITE_LANG } from '../consts';
+import { FRIENDS } from '../data/friends';
 ---
 
 <!doctype html>
@@ -69,8 +70,8 @@ import { SITE_TITLE, SITE_LANG, FRIENDS } from '../consts';
 				transition: all var(--transition);
 			}
 			.friend-card:hover {
-				border-color: var(--jade);
-				background: var(--jade-glow);
+				border-color: var(--accent);
+				background: var(--accent-glow);
 			}
 			.friend-avatar {
 				width: 48px;
@@ -89,7 +90,7 @@ import { SITE_TITLE, SITE_LANG, FRIENDS } from '../consts';
 				transition: color var(--transition);
 			}
 			.friend-card:hover .friend-name {
-				color: var(--jade);
+				color: var(--accent);
 			}
 			.friend-desc {
 				font-size: 0.82em;

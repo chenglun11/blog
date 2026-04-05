@@ -1,0 +1,75 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE, SITE_LANG, SITE_AUTHOR } from '../consts';
+---
+
+<!doctype html>
+<html lang={SITE_LANG}>
+	<head>
+		<BaseHead title={`隐私政策 - ${SITE_TITLE}`} description="隐私政策" />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="page-header animate-in">
+				<h1>隐私政策</h1>
+			</div>
+
+			<article class="policy animate-in" style="animation-delay: 0.1s">
+				<p>最后更新日期：2026 年 4 月 6 日</p>
+
+				<h2>信息收集</h2>
+				<p>本站不会主动收集您的个人信息。当您使用评论功能时，相关数据由第三方服务（Giscus / Disqus）处理，请参阅其各自的隐私政策。</p>
+
+				<h2>Cookies</h2>
+				<p>本站本身不使用 Cookies。第三方服务（如评论系统、嵌入内容）可能会设置 Cookies，具体请参阅对应服务的说明。</p>
+
+				<h2>分析工具</h2>
+				<p>本站目前未使用任何访客分析工具。如果将来启用，会在此页面更新说明。</p>
+
+				<h2>外部链接</h2>
+				<p>本站可能包含指向外部网站的链接，对这些网站的隐私政策和内容不承担责任。</p>
+
+				<h2>联系方式</h2>
+				<p>如果您对本隐私政策有任何疑问，可以通过页脚的联系方式与 {SITE_AUTHOR} 取得联系。</p>
+			</article>
+		</main>
+		<Footer />
+
+		<style>
+			main {
+				max-width: 740px;
+				width: 100%;
+				padding: 2em 1.5em 3em;
+			}
+			.page-header {
+				margin-bottom: 2.5em;
+			}
+			.page-header h1 {
+				font-size: 1.6em;
+				margin: 0;
+			}
+			.policy h2 {
+				font-size: 1.15em;
+				color: rgb(var(--ink));
+				margin: 1.8em 0 0.6em;
+			}
+			.policy h2:first-of-type {
+				margin-top: 1em;
+			}
+			.policy p {
+				font-size: 0.95em;
+				color: rgb(var(--ink-light));
+				line-height: 1.8;
+				margin: 0 0 0.8em;
+			}
+			@media (max-width: 720px) {
+				main {
+					padding: 1.5em 1.25em 2em;
+				}
+			}
+		</style>
+	</body>
+</html>

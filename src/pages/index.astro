@@ -87,7 +87,7 @@ const recentPosts = posts.slice(0, 4);
 			}
 			.hero-greeting {
 				font-size: 0.92em;
-				color: var(--jade);
+				color: var(--accent);
 				letter-spacing: 0.06em;
 				margin-bottom: 0.6em;
 				font-weight: 500;
@@ -110,20 +110,20 @@ const recentPosts = posts.slice(0, 4);
 				align-items: center;
 				gap: 0.4em;
 				padding: 0.7em 1.6em;
-				background: var(--jade);
+				background: var(--accent);
 				color: white;
 				border-radius: 8px;
 				font-size: 0.92em;
 				font-weight: 600;
 				letter-spacing: 0.02em;
 				transition: all var(--transition);
-				box-shadow: 0 2px 8px rgba(45, 138, 114, 0.2);
+				box-shadow: 0 2px 8px var(--accent-glow);
 			}
 			.hero-cta:hover {
-				background: var(--jade-dark);
+				background: var(--accent-dark);
 				color: white;
 				transform: translateY(-1px);
-				box-shadow: 0 4px 16px rgba(45, 138, 114, 0.25);
+				box-shadow: 0 4px 16px var(--accent-glow);
 			}
 			.hero-cta svg {
 				transition: transform var(--transition);
@@ -160,13 +160,13 @@ const recentPosts = posts.slice(0, 4);
 				align-items: center;
 				gap: 0.3em;
 				font-size: 0.88em;
-				color: var(--jade);
+				color: var(--accent);
 				font-weight: 500;
 				transition: gap var(--transition);
 			}
 			.view-all:hover {
 				gap: 0.5em;
-				color: var(--jade-dark);
+				color: var(--accent-dark);
 			}
 
 			/* Posts */
@@ -228,7 +228,7 @@ const recentPosts = posts.slice(0, 4);
 				transition: color var(--transition);
 			}
 			.post-card:hover .post-title {
-				color: var(--jade);
+				color: var(--accent);
 			}
 			.post-desc {
 				font-size: 0.88em;

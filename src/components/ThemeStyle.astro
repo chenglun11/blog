@@ -1,0 +1,34 @@
+---
+import { THEME } from '../consts';
+import { presets, type ThemeColors } from '../theme/presets';
+
+const base = presets[THEME.preset] ?? presets.jade;
+const overrides = THEME.overrides as { light?: Partial<ThemeColors>; dark?: Partial<ThemeColors> };
+const light = { ...base.light, ...overrides?.light };
+const dark = { ...base.dark, ...overrides?.dark };
+
+function toCSS(c: ThemeColors) {
+	return `
+	--ink: ${c.ink};
+	--ink-light: ${c.inkLight};
+	--stone: ${c.stone};
+	--sand: ${c.sand};
+	--sand-dark: ${c.sandDark};
+	--cream: ${c.cream};
+	--accent: ${c.accent};
+	--accent-dark: ${c.accentDark};
+	--accent-light: ${c.accentLight};
+	--accent-glow: ${c.accentGlow};
+	--box-shadow: ${c.boxShadow};
+	--box-shadow-lg: ${c.boxShadowLg};
+	--box-shadow-hover: ${c.boxShadowHover};`;
+}
+---
+
+<style is:inline set:html={`
+:root { color-scheme: light; ${toCSS(light)} }
+[data-theme="dark"] { color-scheme: dark; ${toCSS(dark)} }
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) { color-scheme: dark; ${toCSS(dark)} }
+}
+`} />

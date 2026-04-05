@@ -108,7 +108,7 @@ const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
 				transform: translateY(-50%);
 				width: 10px;
 				height: 10px;
-				background: var(--jade);
+				background: var(--accent);
 				border-radius: 50%;
 			}
 
@@ -128,7 +128,7 @@ const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
 				transition: all var(--transition);
 			}
 			.timeline-item:hover {
-				background: var(--jade-glow);
+				background: var(--accent-glow);
 			}
 			.timeline-dot {
 				position: absolute;
@@ -142,7 +142,7 @@ const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
 				transition: background var(--transition);
 			}
 			.timeline-item:hover .timeline-dot {
-				background: var(--jade);
+				background: var(--accent);
 			}
 			.timeline-date {
 				display: block;
@@ -158,7 +158,7 @@ const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
 				transition: color var(--transition);
 			}
 			.timeline-item:hover .timeline-title {
-				color: var(--jade);
+				color: var(--accent);
 			}
 			.timeline-desc {
 				font-size: 0.88em;
