@@ -100,3 +100,14 @@ export const DISQUS = {
 // 评论系统选择：'giscus' | 'disqus'
 // ============================================================
 export const COMMENT_SYSTEM: 'giscus' | 'disqus' = 'giscus';
+
+// ============================================================
+// 访客分析配置（留空则不启用）
+// ============================================================
+export const ANALYTICS = {
+	// Google Analytics 测量 ID，例如 'G-XXXXXXXXXX'
+	googleAnalyticsId: '',
+	// Umami
+	umamiWebsiteId: '',          // 例如 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+	umamiSrc: '',                // 例如 'https://analytics.example.com/script.js'
+};

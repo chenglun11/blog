@@ -1,0 +1,20 @@
+---
+import { ANALYTICS } from '../consts';
+const { googleAnalyticsId, umamiWebsiteId, umamiSrc } = ANALYTICS;
+---
+
+{googleAnalyticsId && (
+	<>
+		<script async src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}></script>
+		<script is:inline define:vars={{ googleAnalyticsId }}>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', googleAnalyticsId);
+		</script>
+	</>
+)}
+
+{umamiWebsiteId && umamiSrc && (
+	<script async defer src={umamiSrc} data-website-id={umamiWebsiteId}></script>
+)}
