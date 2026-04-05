@@ -1,9 +1,10 @@
 ---
-import { ANALYTICS } from '../consts';
+import { FEATURES, ANALYTICS } from '../consts';
 const { googleAnalyticsId, umamiWebsiteId, umamiSrc } = ANALYTICS;
+const enabled = FEATURES.analytics;
 ---
 
-{googleAnalyticsId && (
+{enabled && googleAnalyticsId && (
 	<>
 		<script async src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}></script>
 		<script is:inline define:vars={{ googleAnalyticsId }}>
@@ -15,6 +16,6 @@ const { googleAnalyticsId, umamiWebsiteId, umamiSrc } = ANALYTICS;
 	</>
 )}
 
-{umamiWebsiteId && umamiSrc && (
+{enabled && umamiWebsiteId && umamiSrc && (
 	<script async defer src={umamiSrc} data-website-id={umamiWebsiteId}></script>
 )}

@@ -46,6 +46,7 @@ export const FEATURES = {
 	comments: true,   // 是否启用评论（Giscus）
 	rss: true,        // 是否启用 RSS
 	toc: true,        // 是否启用文章目录
+	analytics: true,  // 是否启用访客分析
 };
 
 // ============================================================
