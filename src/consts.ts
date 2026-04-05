@@ -1,7 +1,7 @@
 // ============================================================
 // 站点基本信息
 // ============================================================
-export const SITE_TITLE = '我的技术博客';
+export const SITE_TITLE = "Max's Blog";
 export const SITE_DESCRIPTION = '记录学习、分享思考的个人空间';
 export const SITE_AUTHOR = 'chenglun11';
 
@@ -30,7 +30,7 @@ export const SOCIAL = {
 // 页脚配置
 // ============================================================
 export const FOOTER = {
-	copyright: `© ${new Date().getFullYear()} 我的技术博客`,
+	copyright: `© ${new Date().getFullYear()} Max's Blog`,
 	tagline: '记录学习、分享思考',
 	poweredBy: true,   // 显示 "使用 Astro 构建"
 	icp: '',           // 备案号，例如 '京ICP备XXXXXXXX号'
