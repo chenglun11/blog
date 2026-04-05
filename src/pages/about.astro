@@ -2,11 +2,11 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { SOCIAL, SITE_TITLE } from '../consts';
+import { SOCIAL, SITE_TITLE, SITE_LANG } from '../consts';
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang={SITE_LANG}>
 	<head>
 		<BaseHead title={`关于 - ${SITE_TITLE}`} description="关于这个博客和我" />
 	</head>

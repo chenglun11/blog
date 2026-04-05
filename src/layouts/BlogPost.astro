@@ -7,6 +7,7 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import TableOfContents from '../components/TableOfContents.astro';
+import { SITE_LANG } from '../consts';
 
 interface Heading {
 	depth: number;
@@ -22,7 +23,7 @@ const { title, description, pubDate, updatedDate, heroImage, headings = [] } = A
 const hasTOC = headings.filter((h) => h.depth === 2 || h.depth === 3).length > 0;
 ---
 
-<html lang="zh-CN">
+<html lang={SITE_LANG}>
 	<head>
 		<BaseHead title={title} description={description} />
 	</head>

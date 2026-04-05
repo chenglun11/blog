@@ -1,0 +1,112 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE, SITE_LANG, FRIENDS } from '../consts';
+---
+
+<!doctype html>
+<html lang={SITE_LANG}>
+	<head>
+		<BaseHead title={`友链 - ${SITE_TITLE}`} description="友情链接" />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="page-header animate-in">
+				<h1>友链</h1>
+				<p>共 {FRIENDS.length} 位朋友</p>
+			</div>
+
+			<div class="friends-grid">
+				{FRIENDS.map((friend, i) => (
+					<a href={friend.url} target="_blank" class="friend-card animate-in" style={`animation-delay: ${0.1 + i * 0.06}s`}>
+						<img src={friend.avatar} alt={friend.name} class="friend-avatar" loading="lazy" />
+						<div class="friend-info">
+							<h3 class="friend-name">{friend.name}</h3>
+							<p class="friend-desc">{friend.description}</p>
+						</div>
+					</a>
+				))}
+			</div>
+		</main>
+		<Footer />
+
+		<style>
+			main {
+				max-width: 740px;
+				width: 100%;
+				padding: 2em 1.5em 3em;
+			}
+			.page-header {
+				margin-bottom: 2.5em;
+				display: flex;
+				align-items: baseline;
+				gap: 0.8em;
+			}
+			.page-header h1 {
+				font-size: 1.6em;
+				margin: 0;
+			}
+			.page-header p {
+				font-size: 0.88em;
+				color: rgb(var(--stone));
+				margin: 0;
+			}
+			.friends-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+				gap: 1em;
+			}
+			.friend-card {
+				display: flex;
+				align-items: center;
+				gap: 1em;
+				padding: 1.2em 1.4em;
+				border: 1px solid rgb(var(--sand-dark));
+				border-radius: var(--radius);
+				text-decoration: none;
+				transition: all var(--transition);
+			}
+			.friend-card:hover {
+				border-color: var(--jade);
+				background: var(--jade-glow);
+			}
+			.friend-avatar {
+				width: 48px;
+				height: 48px;
+				border-radius: 50%;
+				object-fit: cover;
+				flex-shrink: 0;
+			}
+			.friend-info {
+				min-width: 0;
+			}
+			.friend-name {
+				font-size: 1em;
+				color: rgb(var(--ink));
+				margin: 0 0 0.2em;
+				transition: color var(--transition);
+			}
+			.friend-card:hover .friend-name {
+				color: var(--jade);
+			}
+			.friend-desc {
+				font-size: 0.82em;
+				color: rgb(var(--stone));
+				margin: 0;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			@media (max-width: 720px) {
+				main {
+					padding: 1.5em 1.25em 2em;
+				}
+				.friends-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
+	</body>
+</html>

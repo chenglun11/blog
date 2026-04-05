@@ -1,28 +1,45 @@
 ---
-import { FEATURES, GISCUS } from '../consts';
+import { FEATURES, GISCUS, DISQUS, COMMENT_SYSTEM } from '../consts';
 ---
 
 {FEATURES.comments && (
 <section class="comments">
 	<h2>评论</h2>
-	<div class="giscus-container">
-		<script
-			src="https://giscus.app/client.js"
-			data-repo={GISCUS.repo}
-			data-repo-id={GISCUS.repoId}
-			data-category={GISCUS.category}
-			data-category-id={GISCUS.categoryId}
-			data-mapping="pathname"
-			data-strict="0"
-			data-reactions-enabled="1"
-			data-emit-metadata="0"
-			data-input-position="bottom"
-			data-theme="preferred_color_scheme"
-			data-lang={GISCUS.lang}
-			crossorigin="anonymous"
-			async
-		></script>
-	</div>
+	{COMMENT_SYSTEM === 'giscus' && (
+		<div class="giscus-container">
+			<script
+				src="https://giscus.app/client.js"
+				data-repo={GISCUS.repo}
+				data-repo-id={GISCUS.repoId}
+				data-category={GISCUS.category}
+				data-category-id={GISCUS.categoryId}
+				data-mapping="pathname"
+				data-strict="0"
+				data-reactions-enabled="1"
+				data-emit-metadata="0"
+				data-input-position="bottom"
+				data-theme="preferred_color_scheme"
+				data-lang={GISCUS.lang}
+				crossorigin="anonymous"
+				async
+			></script>
+		</div>
+	)}
+	{COMMENT_SYSTEM === 'disqus' && DISQUS.shortname && (
+		<div id="disqus_thread"></div>
+		<script define:vars={{ shortname: DISQUS.shortname }}>
+			var disqus_config = function () {
+				this.page.url = window.location.href;
+				this.page.identifier = window.location.pathname;
+			};
+			(function() {
+				var d = document, s = d.createElement('script');
+				s.src = 'https://' + shortname + '.disqus.com/embed.js';
+				s.setAttribute('data-timestamp', +new Date());
+				(d.head || d.body).appendChild(s);
+			})();
+		</script>
+	)}
 </section>
 )}
 
@@ -37,7 +54,8 @@ import { FEATURES, GISCUS } from '../consts';
 		margin-bottom: 1.2em;
 		color: rgb(var(--ink));
 	}
-	.giscus-container {
+	.giscus-container,
+	#disqus_thread {
 		min-height: 150px;
 	}
 </style>

@@ -1,0 +1,137 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE, SITE_LANG } from '../consts';
+
+const moments = (await getCollection('moments')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+// Render all moment content
+const rendered = await Promise.all(
+	moments.map(async (m) => {
+		const { Content } = await render(m);
+		return { ...m, Content };
+	})
+);
+---
+
+<!doctype html>
+<html lang={SITE_LANG}>
+	<head>
+		<BaseHead title={`说说 - ${SITE_TITLE}`} description="碎碎念和随想" />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="page-header animate-in">
+				<h1>说说</h1>
+				<p>共 {moments.length} 条</p>
+			</div>
+
+			<div class="moments">
+				{rendered.map((moment, i) => (
+					<div class="moment-card animate-in" style={`animation-delay: ${0.1 + i * 0.06}s`}>
+						<div class="moment-meta">
+							<FormattedDate date={moment.data.pubDate} />
+							{moment.data.tags.length > 0 && (
+								<div class="moment-tags">
+									{moment.data.tags.map((tag: string) => (
+										<span class="moment-tag">{tag}</span>
+									))}
+								</div>
+							)}
+						</div>
+						<div class="moment-body">
+							<moment.Content />
+						</div>
+					</div>
+				))}
+			</div>
+		</main>
+		<Footer />
+
+		<style>
+			main {
+				max-width: 740px;
+				width: 100%;
+				padding: 2em 1.5em 3em;
+			}
+			.page-header {
+				margin-bottom: 2.5em;
+				display: flex;
+				align-items: baseline;
+				gap: 0.8em;
+			}
+			.page-header h1 {
+				font-size: 1.6em;
+				margin: 0;
+			}
+			.page-header p {
+				font-size: 0.88em;
+				color: rgb(var(--stone));
+				margin: 0;
+			}
+			.moments {
+				display: flex;
+				flex-direction: column;
+				gap: 1em;
+			}
+			.moment-card {
+				padding: 1.4em 1.6em;
+				border: 1px solid rgb(var(--sand-dark));
+				border-radius: var(--radius);
+				transition: all var(--transition);
+			}
+			.moment-card:hover {
+				border-color: var(--jade);
+				background: var(--jade-glow);
+			}
+			.moment-meta {
+				display: flex;
+				align-items: center;
+				gap: 0.8em;
+				font-size: 0.82em;
+				color: rgb(var(--stone));
+				margin-bottom: 0.8em;
+			}
+			.moment-tags {
+				display: flex;
+				gap: 0.4em;
+			}
+			.moment-tag {
+				font-size: 0.85em;
+				padding: 0.1em 0.5em;
+				background: rgb(var(--sand));
+				border-radius: 4px;
+			}
+			.moment-body {
+				font-size: 0.95em;
+				color: rgb(var(--ink-light));
+				line-height: 1.8;
+			}
+			.moment-body :global(p) {
+				margin: 0 0 0.6em;
+			}
+			.moment-body :global(p:last-child) {
+				margin-bottom: 0;
+			}
+			.moment-body :global(img) {
+				max-width: 100%;
+				border-radius: 6px;
+				margin: 0.6em 0;
+			}
+			@media (max-width: 720px) {
+				main {
+					padding: 1.5em 1.25em 2em;
+				}
+				.moment-card {
+					padding: 1em 1.2em;
+				}
+			}
+		</style>
+	</body>
+</html>
