@@ -57,6 +57,13 @@ export const FOOTER = {
 	tagline: '目标是激励他人，感动他人，创造出值得付出时间的东西',
 	poweredBy: true,   // 显示 "使用 Astro 构建"
 	icp: '苏ICP备2020053015号-2',
+	// 页脚底部链接
+	links: [
+		{ text: '隐私政策', href: 'privacy' },
+	],
+	// 自定义 HTML 区域（支持图片、徽标等任意 HTML）
+	// 例如公安备案：'<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=xxx" target="_blank"><img src="/blog/images/beian.png" style="vertical-align:middle;margin-right:4px" />苏公网安备 xxx 号</a>'
+	customHtml: '',
 };
 
 // ============================================================
@@ -82,15 +89,3 @@ export const DISQUS = {
 // 评论系统选择：'giscus' | 'disqus'
 // ============================================================
 export const COMMENT_SYSTEM: 'giscus' | 'disqus' = 'giscus';
-
-// ============================================================
-// 友链配置
-// ============================================================
-export const FRIENDS = [
-	{
-		name: '示例博客',
-		url: 'https://example.com',
-		avatar: 'https://via.placeholder.com/80',
-		description: '一个示例友链',
-	},
-];
