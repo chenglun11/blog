@@ -23,14 +23,14 @@ const sortedTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 		<h4 class="tag-cloud-title">标签</h4>
 		<div class="tag-list">
 			<a
-				href="/post/"
+				href={`${import.meta.env.BASE_URL}post/`}
 				class:list={['tag-btn', { active: !activeTag }]}
 			>
 				全部
 			</a>
 			{sortedTags.map(([tag, count]) => (
 				<a
-					href={`/post/?tag=${encodeURIComponent(tag)}`}
+					href={`${import.meta.env.BASE_URL}post/?tag=${encodeURIComponent(tag)}`}
 					class:list={['tag-btn', { active: activeTag === tag }]}
 				>
 					{tag}

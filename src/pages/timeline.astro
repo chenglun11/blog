@@ -40,7 +40,7 @@ const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
 						<h2 class="year-label">{year}</h2>
 						<div class="timeline-items">
 							{postsByYear[year].map((post, pi) => (
-								<a href={`/post/${post.id}/`} class="timeline-item animate-in" style={`animation-delay: ${0.15 + yi * 0.1 + pi * 0.06}s`}>
+								<a href={`${import.meta.env.BASE_URL}post/${post.id}/`} class="timeline-item animate-in" style={`animation-delay: ${0.15 + yi * 0.1 + pi * 0.06}s`}>
 									<div class="timeline-dot" />
 									<div class="timeline-content">
 										<time class="timeline-date">

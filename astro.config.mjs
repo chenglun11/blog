@@ -12,6 +12,6 @@ import { defineConfig } from 'astro/config';
 //   and set output: 'server'. Static mode works out of the box.
 export default defineConfig({
 	site: 'https://chenglun11.github.io',
-	base: '/blog',
+	base: '/blog/',
 	integrations: [mdx(), sitemap()],
 });
