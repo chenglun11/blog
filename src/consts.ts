@@ -2,8 +2,8 @@
 // 站点基本信息
 // ============================================================
 export const SITE_TITLE = "Max's Blog";
-export const SITE_DESCRIPTION = '记录学习、分享思考的个人空间';
-export const SITE_AUTHOR = 'chenglun11';
+export const SITE_DESCRIPTION = '目标是激励他人，感动他人，创造出值得付出时间的东西';
+export const SITE_AUTHOR = 'Max Li';
 
 // ============================================================
 // 功能开关
@@ -20,9 +20,9 @@ export const FEATURES = {
 export const SOCIAL = {
 	github: 'https://github.com/chenglun11',
 	twitter: '',       // 例如 'https://x.com/yourname'
-	email: '',         // 例如 'mailto:you@example.com'
+	email: 'mailto:lchnan7@outlook.com',         // 例如 'mailto:you@example.com'
 	weibo: '',         // 例如 'https://weibo.com/u/youruid'
-	bilibili: '',      // 例如 'https://space.bilibili.com/youruid'
+	bilibili: 'https://space.bilibili.com/83490710',      // 例如 'https://space.bilibili.com/youruid'
 	zhihu: '',         // 例如 'https://www.zhihu.com/people/yourname'
 };
 
@@ -31,9 +31,9 @@ export const SOCIAL = {
 // ============================================================
 export const FOOTER = {
 	copyright: `© ${new Date().getFullYear()} Max's Blog`,
-	tagline: '记录学习、分享思考',
+	tagline: '目标是激励他人，感动他人，创造出值得付出时间的东西',
 	poweredBy: true,   // 显示 "使用 Astro 构建"
-	icp: '',           // 备案号，例如 '京ICP备XXXXXXXX号'
+	icp: '苏ICP备2020053015号-2',           // 备案号，例如 '京ICP备XXXXXXXX号'
 };
 
 // ============================================================
