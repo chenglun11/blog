@@ -1,36 +1,30 @@
 ---
-/**
- * Giscus 评论组件
- *
- * 使用前请：
- * 1. 在 GitHub 仓库开启 Discussions 功能
- * 2. 安装 Giscus App: https://github.com/apps/giscus
- * 3. 访问 https://giscus.app 获取 repo-id 和 category-id
- * 4. 填入下方配置
- */
+import { FEATURES, GISCUS } from '../consts';
 ---
 
+{FEATURES.comments && (
 <section class="comments">
 	<h2>评论</h2>
 	<div class="giscus-container">
 		<script
 			src="https://giscus.app/client.js"
-			data-repo="chenglun11/blog"
-			data-repo-id="R_kgDORf62LA"
-			data-category="Announcements"
-			data-category-id="DIC_kwDORf62LM4C4EkP"
+			data-repo={GISCUS.repo}
+			data-repo-id={GISCUS.repoId}
+			data-category={GISCUS.category}
+			data-category-id={GISCUS.categoryId}
 			data-mapping="pathname"
 			data-strict="0"
 			data-reactions-enabled="1"
 			data-emit-metadata="0"
 			data-input-position="bottom"
 			data-theme="preferred_color_scheme"
-			data-lang="zh-CN"
+			data-lang={GISCUS.lang}
 			crossorigin="anonymous"
 			async
 		></script>
 	</div>
 </section>
+)}
 
 <style>
 	.comments {

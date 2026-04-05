@@ -1,5 +1,36 @@
 ---
-const today = new Date();
+import { FEATURES, SOCIAL, FOOTER } from '../consts';
+
+// 社交链接 SVG 图标映射
+const socialIcons: Record<string, { label: string; svg: string }> = {
+	github: {
+		label: 'GitHub',
+		svg: '<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>',
+	},
+	twitter: {
+		label: 'Twitter',
+		svg: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
+	},
+	email: {
+		label: '邮箱',
+		svg: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>',
+	},
+	weibo: {
+		label: '微博',
+		svg: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.739 5.443zM20.196 9.4a5.1 5.1 0 0 0-4.832-1.655.686.686 0 1 0 .27 1.345 3.73 3.73 0 0 1 3.536 1.213 3.72 3.72 0 0 1 .773 3.666.686.686 0 0 0 1.308.41A5.1 5.1 0 0 0 20.196 9.4zM18.12 11.39a2.47 2.47 0 0 0-1.876-.645.53.53 0 1 0 .108 1.057 1.4 1.4 0 0 1 1.07.368c.292.293.39.703.26 1.092a.53.53 0 1 0 1.01.322 2.47 2.47 0 0 0-.572-2.194z"/></svg>',
+	},
+	bilibili: {
+		label: 'Bilibili',
+		svg: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373z"/></svg>',
+	},
+	zhihu: {
+		label: '知乎',
+		svg: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5.721 0C2.251 0 0 2.25 0 5.719V18.28C0 21.751 2.252 24 5.721 24h12.56C21.751 24 24 21.75 24 18.281V5.72C24 2.249 21.75 0 18.281 0zm1.964 4.078h6.46c.09 0 .164.073.164.164v.921c0 .09-.073.164-.164.164H9.93l-.363 2.06h3.63c.09 0 .163.074.163.164v.922c0 .09-.073.163-.163.163h-3.96l-.584 3.305h4.873c.09 0 .164.073.164.163v.922c0 .09-.074.164-.164.164H7.685a.164.164 0 0 1-.163-.164v-.922c0-.09.073-.163.163-.163h.328l.584-3.305H7.03a.164.164 0 0 1-.164-.163v-.922c0-.09.074-.164.164-.164h1.896l.363-2.06H7.685a.164.164 0 0 1-.163-.164v-.921c0-.091.073-.164.163-.164zm7.45 1.901h2.531c.09 0 .164.073.164.163v10.5c0 .09-.074.164-.164.164h-2.531a.164.164 0 0 1-.164-.164v-10.5c0-.09.074-.163.164-.163z"/></svg>',
+	},
+};
+
+// 过滤出有值的社交链接
+const activeSocials = Object.entries(SOCIAL).filter(([_, url]) => url);
 ---
 
 <footer>
@@ -7,27 +38,33 @@ const today = new Date();
 		<div class="footer-divider"></div>
 		<div class="footer-content">
 			<div class="footer-left">
-				<p class="copyright">&copy; {today.getFullYear()} 我的技术博客</p>
-				<p class="tagline">记录学习、分享思考</p>
+				<p class="copyright">{FOOTER.copyright}</p>
+				{FOOTER.tagline && <p class="tagline">{FOOTER.tagline}</p>}
+				{FOOTER.icp && <a href="https://beian.miit.gov.cn/" target="_blank" class="icp">{FOOTER.icp}</a>}
 			</div>
 			<div class="footer-right">
-				<a href={`${import.meta.env.BASE_URL}rss.xml`} class="footer-link">
-					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M4 11a9 9 0 0 1 9 9"/>
-						<path d="M4 4a16 16 0 0 1 16 16"/>
-						<circle cx="5" cy="19" r="1"/>
-					</svg>
-					RSS
-				</a>
-				<a href="https://github.com/chenglun11" target="_blank" class="footer-link">
-					<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-						<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-					</svg>
-					GitHub
-				</a>
+				{FEATURES.rss && (
+					<a href={`${import.meta.env.BASE_URL}rss.xml`} class="footer-link">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M4 11a9 9 0 0 1 9 9"/>
+							<path d="M4 4a16 16 0 0 1 16 16"/>
+							<circle cx="5" cy="19" r="1"/>
+						</svg>
+						RSS
+					</a>
+				)}
+				{activeSocials.map(([key, url]) => {
+					const icon = socialIcons[key];
+					return icon ? (
+						<a href={url} target="_blank" class="footer-link">
+							<Fragment set:html={icon.svg} />
+							{icon.label}
+						</a>
+					) : null;
+				})}
 			</div>
 		</div>
-		<p class="footer-note">使用 <a href="https://astro.build/" target="_blank">Astro</a> 构建</p>
+		{FOOTER.poweredBy && <p class="footer-note">使用 <a href="https://astro.build/" target="_blank">Astro</a> 构建</p>}
 	</div>
 </footer>
 <style>
@@ -68,9 +105,23 @@ const today = new Date();
 		color: rgb(var(--stone));
 		margin-top: 0.3em;
 	}
+	.icp {
+		display: block;
+		font-size: 0.75em;
+		color: rgb(var(--stone));
+		text-decoration: none;
+		margin-top: 0.4em;
+		opacity: 0.6;
+	}
+	.icp:hover {
+		color: var(--jade);
+		opacity: 1;
+	}
 	.footer-right {
 		display: flex;
 		gap: 0.6em;
+		flex-wrap: wrap;
+		justify-content: flex-end;
 	}
 	.footer-link {
 		display: inline-flex;
@@ -114,6 +165,9 @@ const today = new Date();
 			align-items: center;
 			gap: 1.5em;
 			text-align: center;
+		}
+		.footer-right {
+			justify-content: center;
 		}
 	}
 </style>
