@@ -109,6 +109,6 @@ export const ANALYTICS = {
 	// Google Analytics 测量 ID，例如 'G-XXXXXXXXXX'
 	googleAnalyticsId: '',
 	// Umami
-	umamiWebsiteId: 'd1ade46d-9a47-48e9-9c4f-f54177814094',          // 例如 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+	umamiWebsiteId: '65699e89-5b08-453d-bef4-dae40c554711',          // 例如 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
 	umamiSrc: 'https://lab.lchnan.cn/script.js',                // 例如 'https://analytics.example.com/script.js'
 };
