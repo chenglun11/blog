@@ -1,0 +1,76 @@
+---
+interface Props {
+	variant?: 'sidebar' | 'inline';
+}
+
+const { variant = 'inline' } = Astro.props;
+---
+
+<a
+	href={`${import.meta.env.BASE_URL}post/`}
+	class:list={['article-back', variant]}
+	data-article-back
+>
+	<svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+		<path d="M11.5 4.5L7 9L11.5 13.5M7.5 9H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+	</svg>
+	<span>返回</span>
+</a>
+
+<script>
+	function initArticleBack() {
+		document.querySelectorAll<HTMLAnchorElement>('[data-article-back]').forEach((link) => {
+			if (link.dataset.ready === 'true') return;
+			link.dataset.ready = 'true';
+			link.addEventListener('click', (event) => {
+				if (!document.referrer || window.history.length <= 1) return;
+				try {
+					const previous = new URL(document.referrer);
+					if (previous.origin !== window.location.origin) return;
+					event.preventDefault();
+					window.history.back();
+				} catch {
+					// Invalid referrer: keep the normal article-list fallback.
+				}
+			});
+		});
+	}
+
+	initArticleBack();
+	document.addEventListener('astro:after-swap', initArticleBack);
+</script>
+
+<style>
+	.article-back {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.55em;
+		min-height: 40px;
+		padding: 0.55em 0.85em;
+		border: 1px solid rgb(var(--sand-dark));
+		border-radius: 9px;
+		background: rgb(var(--cream));
+		color: rgb(var(--stone));
+		font-size: 0.84em;
+		font-weight: 600;
+		text-decoration: none;
+		transition: color var(--transition), border-color var(--transition), background var(--transition), transform var(--transition);
+	}
+	.article-back.sidebar {
+		width: 100%;
+		margin-bottom: 1.2em;
+	}
+	.article-back:hover {
+		color: var(--accent);
+		border-color: color-mix(in srgb, var(--accent) 38%, transparent);
+		background: var(--accent-glow);
+		transform: translateX(-2px);
+	}
+	.article-back svg {
+		flex: 0 0 auto;
+		transition: transform var(--transition);
+	}
+	.article-back:hover svg {
+		transform: translateX(-2px);
+	}
+</style>

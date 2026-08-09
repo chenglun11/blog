@@ -37,7 +37,7 @@ const years = Object.keys(grouped).map(Number).sort((a, b) => b - a);
 			</div>
 
 			{years.map((year, yi) => (
-				<section class="archive-year animate-in" style={`animation-delay: ${0.1 + yi * 0.08}s`}>
+				<section id={`year-${year}`} class="archive-year animate-in" style={`animation-delay: ${0.1 + yi * 0.08}s`}>
 					<h2 class="year-title">{year}</h2>
 					{Object.keys(grouped[year]).map(Number).sort((a, b) => b - a).map((month) => (
 						<div class="archive-month">

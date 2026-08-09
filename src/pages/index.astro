@@ -5,12 +5,31 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE, SITE_LANG, HERO } from '../consts';
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_LANG, HERO, PROFILE } from '../consts';
 
 const posts = (await getCollection('post', ({ data }) => !data.draft)).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 const recentPosts = posts.slice(0, 4);
+
+const archiveCounts = new Map<number, number>();
+const categoryCounts = new Map<string, number>();
+const tagCounts = new Map<string, number>();
+
+posts.forEach((post) => {
+	const year = post.data.pubDate.getFullYear();
+	archiveCounts.set(year, (archiveCounts.get(year) || 0) + 1);
+	post.data.categories.forEach((category) => {
+		categoryCounts.set(category, (categoryCounts.get(category) || 0) + 1);
+	});
+	post.data.tags.forEach((tag) => {
+		tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
+	});
+});
+
+const archiveYears = [...archiveCounts.entries()].sort((a, b) => b[0] - a[0]).slice(0, 3);
+const topCategories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5);
+const topTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 9);
 ---
 
 <!doctype html>
@@ -24,17 +43,69 @@ const recentPosts = posts.slice(0, 4);
 		<!-- Hero Section -->
 		<section class="hero">
 			<div class="hero-inner">
-				<p class="hero-greeting">{HERO.greeting}</p>
-				<h1 class="hero-title">{HERO.title}</h1>
-				<p class="hero-desc">
-					{HERO.description}
-				</p>
-				<a href={`${import.meta.env.BASE_URL}post/`} class="hero-cta">
-					{HERO.ctaText}
-					<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-						<path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-					</svg>
-				</a>
+				<div class="hero-copy">
+					<div class="hero-heading">
+						<img
+							class="hero-avatar"
+							src={`${import.meta.env.BASE_URL}${PROFILE.avatar}`}
+							alt={PROFILE.avatarAlt}
+							width="320"
+							height="320"
+						/>
+						<div>
+							<p class="hero-greeting">{HERO.greeting}</p>
+							<h1 class="hero-title">{HERO.title}</h1>
+						</div>
+					</div>
+					<p class="hero-desc">{HERO.description}</p>
+					<a href={`${import.meta.env.BASE_URL}post/`} class="hero-cta">
+						{HERO.ctaText}
+						<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+							<path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>
+					</a>
+				</div>
+				<aside class="hero-index" aria-label="博客索引">
+					<div class="hero-index-head">
+						<span>浏览索引</span>
+						<span>{String(posts.length).padStart(2, '0')} 篇文章</span>
+					</div>
+					<div class="hero-index-grid">
+						<section class="index-group">
+							<a class="index-title" href={`${import.meta.env.BASE_URL}archives/`}>归档 <span>↗</span></a>
+							<div class="archive-links">
+								{archiveYears.map(([year, count]) => (
+									<a href={`${import.meta.env.BASE_URL}archives/#year-${year}`}>
+										<span>{year}</span><small>{count}</small>
+									</a>
+								))}
+							</div>
+						</section>
+						<section class="index-group">
+							<span class="index-title">分类</span>
+							<div class="category-links">
+								{topCategories.map(([category, count]) => (
+									<a href={`${import.meta.env.BASE_URL}post/?category=${encodeURIComponent(category)}`}>
+										<span>{category}</span><small>{count}</small>
+									</a>
+								))}
+							</div>
+						</section>
+					</div>
+					<section class="index-group tag-group">
+						<span class="index-title">标签云</span>
+						<div class="hero-tags">
+							{topTags.map(([tag, count], index) => (
+								<a
+									href={`${import.meta.env.BASE_URL}post/?tag=${encodeURIComponent(tag)}`}
+									class:list={['hero-tag', { featured: index < 3 }]}
+								>
+									{tag}<small>{count}</small>
+								</a>
+							))}
+						</div>
+					</section>
+				</aside>
 			</div>
 		</section>
 
@@ -76,34 +147,70 @@ const recentPosts = posts.slice(0, 4);
 		<style>
 			/* Hero */
 			.hero {
-				padding: 5em 1.5em 4em;
-				text-align: center;
+				position: relative;
+				padding: 4.2em 1.5em 3.6em;
 				border-bottom: 1px solid rgb(var(--sand-dark));
+				overflow: hidden;
+			}
+			.hero::before {
+				content: "";
+				position: absolute;
+				width: 360px;
+				height: 360px;
+				right: max(-100px, calc((100vw - 1280px) / 2 - 100px));
+				top: -210px;
+				border-radius: 50%;
+				background: radial-gradient(circle, var(--accent-glow) 0%, transparent 68%);
+				pointer-events: none;
 			}
 			.hero-inner {
-				max-width: 640px;
+				position: relative;
+				display: grid;
+				grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
+				align-items: end;
+				gap: clamp(3em, 8vw, 7em);
+				max-width: 1100px;
 				margin: 0 auto;
 				animation: fadeUp 0.7s var(--ease-out) both;
+			}
+			.hero-copy {
+				max-width: 650px;
+			}
+			.hero-heading {
+				display: flex;
+				align-items: center;
+				gap: 1.35em;
+				margin-bottom: 0.9em;
+			}
+			.hero-avatar {
+				width: 96px;
+				height: 96px;
+				flex: 0 0 auto;
+				object-fit: cover;
+				border-radius: 22px;
+				background: #fff;
+				box-shadow: 0 10px 32px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(var(--sand-dark), 0.7);
 			}
 			.hero-greeting {
 				font-size: 0.92em;
 				color: var(--accent);
-				letter-spacing: 0.06em;
-				margin-bottom: 0.6em;
+				letter-spacing: 0.08em;
+				margin: 0 0 0.45em;
 				font-weight: 500;
 			}
 			.hero-title {
-				font-size: 2.8em;
-				letter-spacing: -0.02em;
-				margin-bottom: 0.5em;
+				font-size: clamp(2.6em, 5vw, 4.1em);
+				letter-spacing: -0.045em;
+				margin: 0;
 				color: rgb(var(--ink));
-				line-height: 1.2;
+				line-height: 1.05;
 			}
 			.hero-desc {
-				font-size: 1.05em;
+				max-width: 580px;
+				font-size: 1em;
 				color: rgb(var(--stone));
-				line-height: 1.8;
-				margin-bottom: 2em;
+				line-height: 1.75;
+				margin: 0 0 1.7em;
 			}
 			.hero-cta {
 				display: inline-flex;
@@ -131,15 +238,103 @@ const recentPosts = posts.slice(0, 4);
 			.hero-cta:hover svg {
 				transform: translateX(2px);
 			}
-			.hide-mobile {
-				display: inline;
+			.hero-index {
+				padding-left: 1.7em;
+				border-left: 1px solid rgb(var(--sand-dark));
+			}
+			.hero-index-head {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 1em;
+				padding-bottom: 0.65em;
+				margin-bottom: 1em;
+				border-bottom: 1px solid rgb(var(--sand-dark));
+			}
+			.hero-index-head span {
+				font-size: 0.7em;
+				letter-spacing: 0.08em;
+				color: rgb(var(--stone));
+			}
+			.hero-index-grid {
+				display: grid;
+				grid-template-columns: 0.8fr 1.2fr;
+				gap: 1.5em;
+			}
+			.index-title {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				margin-bottom: 0.6em;
+				color: rgb(var(--ink));
+				font-size: 0.82em;
+				font-weight: 700;
+				letter-spacing: 0.04em;
+			}
+			a.index-title:hover {
+				color: var(--accent);
+			}
+			.archive-links,
+			.category-links {
+				display: flex;
+				flex-direction: column;
+				gap: 0.2em;
+			}
+			.archive-links a,
+			.category-links a {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 0.7em;
+				padding: 0.18em 0;
+				font-size: 0.77em;
+				color: rgb(var(--stone));
+			}
+			.archive-links a:hover,
+			.category-links a:hover {
+				color: var(--accent);
+			}
+			.archive-links small,
+			.category-links small,
+			.hero-tag small {
+				font-size: 0.8em;
+				opacity: 0.55;
+			}
+			.tag-group {
+				margin-top: 1em;
+			}
+			.hero-tags {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.4em;
+			}
+			.hero-tag {
+				display: inline-flex;
+				align-items: baseline;
+				gap: 0.35em;
+				padding: 0.18em 0.58em;
+				border: 1px solid rgb(var(--sand-dark));
+				border-radius: 999px;
+				font-size: 0.7em;
+				color: rgb(var(--stone));
+				transition: all var(--transition);
+			}
+			.hero-tag.featured {
+				color: var(--accent);
+				border-color: color-mix(in srgb, var(--accent) 32%, transparent);
+				background: var(--accent-glow);
+			}
+			.hero-tag:hover {
+				color: var(--accent);
+				border-color: var(--accent);
+				transform: translateY(-1px);
 			}
 
 			/* Main */
 			main {
-				max-width: 880px;
+				max-width: 1100px;
 				width: 100%;
-				padding: 3em 1.5em;
+				padding: 2.6em 1.5em 3em;
 			}
 
 			/* Section Header */
@@ -243,19 +438,31 @@ const recentPosts = posts.slice(0, 4);
 
 			@media (max-width: 720px) {
 				.hero {
-					padding: 3.5em 1.25em 3em;
+					padding: 2.8em 1.25em 2.5em;
+				}
+				.hero-inner {
+					grid-template-columns: 1fr;
+					gap: 2.4em;
 				}
 				.hero-title {
-					font-size: 2em;
+					font-size: 2.55em;
+				}
+				.hero-heading {
+					gap: 1em;
+				}
+				.hero-avatar {
+					width: 74px;
+					height: 74px;
+					border-radius: 17px;
 				}
 				.hero-desc {
 					font-size: 0.95em;
 				}
-				.hide-mobile {
-					display: none;
+				.hero-index {
+					padding: 1.1em 0 0 1.1em;
 				}
 				main {
-					padding: 2em 1.25em;
+					padding: 2em 1.25em 2.5em;
 				}
 				.post-card {
 					flex-direction: column;

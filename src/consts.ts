@@ -27,6 +27,13 @@ export const HERO = {
 	ctaText: '阅读文章',
 };
 
+// 个人头像。展示图经过裁切以适配小尺寸，原图保存在 public/images/avatar.png。
+export const PROFILE = {
+	avatar: 'images/avatar-display.webp',
+	avatarAlt: 'LCHNAN',
+	avatarSource: 'https://lchnan.cn/images/6eb5e7383d210.png',
+};
+
 // ============================================================
 // 导航栏配置
 // ============================================================

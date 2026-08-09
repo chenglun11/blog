@@ -33,7 +33,7 @@ const allPosts = (await getCollection('post', ({ data }) => !data.draft)).sort(
 
 				<div class="posts-grid" id="posts-grid">
 					{allPosts.map((post, i) => (
-						<a href={`${import.meta.env.BASE_URL}post/${post.id}/`} class="card animate-in" style={`animation-delay: ${0.1 + i * 0.08}s`} data-tags={JSON.stringify(post.data.tags)}>
+						<a href={`${import.meta.env.BASE_URL}post/${post.id}/`} class="card animate-in" style={`animation-delay: ${0.1 + i * 0.08}s`} data-tags={JSON.stringify(post.data.tags)} data-categories={JSON.stringify(post.data.categories)}>
 							{post.data.heroImage && (
 								<div class="card-image">
 									<Image width={720} height={400} src={post.data.heroImage} alt="" />
@@ -79,6 +79,7 @@ const allPosts = (await getCollection('post', ({ data }) => !data.draft)).sort(
 			function initTagFilter() {
 				const params = new URLSearchParams(window.location.search);
 				const activeTag = params.get('tag');
+				const activeCategory = params.get('category');
 
 				// Highlight active tag button
 				document.querySelectorAll('.tag-btn').forEach((btn) => {
@@ -100,12 +101,13 @@ const allPosts = (await getCollection('post', ({ data }) => !data.draft)).sort(
 				let visibleCount = 0;
 
 				cards.forEach((card) => {
-					if (!activeTag) {
+					if (!activeTag && !activeCategory) {
 						card.style.display = '';
 						visibleCount++;
 					} else {
 						const tags: string[] = JSON.parse(card.dataset.tags || '[]');
-						if (tags.includes(activeTag)) {
+						const categories: string[] = JSON.parse(card.dataset.categories || '[]');
+						if ((!activeTag || tags.includes(activeTag)) && (!activeCategory || categories.includes(activeCategory))) {
 							card.style.display = '';
 							visibleCount++;
 						} else {
