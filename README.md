@@ -40,10 +40,24 @@ npm run dev
 | `npm run dev` | 启动开发服务器（localhost:4321） |
 | `npm run build` | 构建生产版本到 `./dist/` |
 | `npm run preview` | 本地预览构建结果 |
+| `npm run import:wordpress -- export.xml` | 从 WordPress WXR 导入内容 |
+
+## 从 WordPress 迁移
+
+在 WordPress 后台选择“工具 → 导出 → 所有内容”，然后运行：
+
+```bash
+npm run import:wordpress -- /path/to/wordpress-export.xml --include-drafts
+npm run build
+```
+
+导入器会转换文章、页面和“说说”，下载上传目录中的媒体，保留分类、标签、发布日期、草稿状态与已审核评论，并为 Vercel 和 Netlify 生成旧地址 301 重定向。默认不会覆盖同名内容；确认需要重新生成时加 `--force`。可用参数还有 `--dry-run`、`--skip-media` 和 `--base /目标子路径/`。
+
+迁移结果记录在 `migration/wordpress-import-report.json`。WordPress 插件自己保存在数据库选项中的内容通常不包含在 WXR 中，需要单独处理。
 
 ## 📝 如何添加新文章
 
-1. 在 `src/content/blog/` 目录下创建新的 `.md` 文件
+1. 在 `src/content/post/` 目录下创建新的 `.md` 文件
 2. 添加 frontmatter 元数据：
 
 ```markdown
@@ -122,7 +136,9 @@ Vercel 会自动识别 `vercel.json` 配置。
 ├── src/
 │   ├── components/      # Astro 组件
 │   ├── content/
-│   │   └── blog/        # 博客文章（Markdown）
+│   │   ├── post/        # 博客文章（Markdown）
+│   │   ├── page/        # WordPress 页面（Markdown）
+│   │   └── moments/     # 说说（Markdown）
 │   ├── layouts/         # 页面布局
 │   ├── pages/           # 路由页面
 │   ├── styles/          # 全局样式

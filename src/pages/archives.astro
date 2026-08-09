@@ -6,7 +6,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_TITLE, SITE_LANG } from '../consts';
 
-const posts = (await getCollection('post')).sort(
+const posts = (await getCollection('post', ({ data }) => !data.draft)).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 

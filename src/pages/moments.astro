@@ -6,7 +6,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_TITLE, SITE_LANG } from '../consts';
 
-const moments = (await getCollection('moments')).sort(
+const moments = (await getCollection('moments', ({ data }) => !data.draft)).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
@@ -34,7 +34,7 @@ const rendered = await Promise.all(
 
 			<div class="moments">
 				{rendered.map((moment, i) => (
-					<div class="moment-card animate-in" style={`animation-delay: ${0.1 + i * 0.06}s`}>
+					<div id={moment.id} class="moment-card animate-in" style={`animation-delay: ${0.1 + i * 0.06}s`}>
 						<div class="moment-meta">
 							<FormattedDate date={moment.data.pubDate} />
 							{moment.data.tags.length > 0 && (

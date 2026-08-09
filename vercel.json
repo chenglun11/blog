@@ -1,3 +1,295 @@
 {
-  "framework": "astro"
+  "framework": "astro",
+  "redirects": [
+    {
+      "source": "/privacy-policy",
+      "destination": "/blog/privacy-policy/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/3",
+      "destination": "/blog/privacy-policy/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/22",
+      "destination": "/blog/post/aboutme/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/30",
+      "destination": "/blog/post/onemanager-巨硬云盘最好的帮手/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/49",
+      "destination": "/blog/post/friend-application/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/58",
+      "destination": "/blog/post/开箱-小米80w帆船无线充电套装/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/71",
+      "destination": "/blog/post/server-report-2021-09-21/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/74",
+      "destination": "/blog/post/逝去的不必留恋,未来的更加美好/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/77",
+      "destination": "/blog/post/甄选-uptimerobot-免费网页状态监视器服务/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/86",
+      "destination": "/blog/post/唯一/",
+      "permanent": true
+    },
+    {
+      "source": "/friends",
+      "destination": "/blog/links/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/107",
+      "destination": "/blog/links/",
+      "permanent": true
+    },
+    {
+      "source": "/time-line",
+      "destination": "/blog/time-line/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/120",
+      "destination": "/blog/time-line/",
+      "permanent": true
+    },
+    {
+      "source": "/%e8%af%b4%e8%af%b4",
+      "destination": "/blog/说说/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/180",
+      "destination": "/blog/说说/",
+      "permanent": true
+    },
+    {
+      "source": "/applyurl",
+      "destination": "/blog/applyurl/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/788",
+      "destination": "/blog/applyurl/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/132",
+      "destination": "/blog/post/试-图-感-受,不-要-理-解-让-情-绪-主,导-而-非-逻-辑/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/137",
+      "destination": "/blog/post/教程向-ios如何订阅日历文件/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/144",
+      "destination": "/blog/post/软件工程-扇入(fan-in)和扇出(fan-out)/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/151",
+      "destination": "/blog/post/软件工程-rup统一开发过程/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/154",
+      "destination": "/blog/post/软件工程-黑盒测试与白盒测试/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/157",
+      "destination": "/blog/post/爱发电~~/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/161",
+      "destination": "/blog/post/软件工程-环路复杂度/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/186",
+      "destination": "/blog/post/软工复习笔记/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/190",
+      "destination": "/blog/post/win11-wsa安装使用日记/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/199",
+      "destination": "/blog/post/计算机基础-浅析mb、mb、mbps、mbps/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/201",
+      "destination": "/blog/post/letting-go/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/216",
+      "destination": "/blog/post/office-e5-renew/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/242",
+      "destination": "/blog/post/重不重要-都不要了/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/255",
+      "destination": "/blog/post/jetbrains-live-license-2022-7/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/271",
+      "destination": "/blog/post/windows-11-22h2-资源管理器多选项卡功能/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/287",
+      "destination": "/blog/post/关于我又把主页改了这件事/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/295",
+      "destination": "/blog/post/计算机基础-海明校验码/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/305",
+      "destination": "/blog/post/关于odcn下线的通知/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/309",
+      "destination": "/blog/post/计算机基础-动态ram-静态ram/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/312",
+      "destination": "/blog/post/win11-wsl安装笔记/",
+      "permanent": true
+    },
+    {
+      "source": "/shuoshuo/%e9%9a%8f%e7%ac%942022-1",
+      "destination": "/blog/moments/#%E9%9A%8F%E7%AC%942022-1",
+      "permanent": true
+    },
+    {
+      "source": "/archives/179",
+      "destination": "/blog/moments/#%E9%9A%8F%E7%AC%942022-1",
+      "permanent": true
+    },
+    {
+      "source": "/shuoshuo/%e9%9a%8f%e8%ae%b0-2022-3-20",
+      "destination": "/blog/moments/#%E9%9A%8F%E8%AE%B0-2022-3-20",
+      "permanent": true
+    },
+    {
+      "source": "/archives/204",
+      "destination": "/blog/moments/#%E9%9A%8F%E8%AE%B0-2022-3-20",
+      "permanent": true
+    },
+    {
+      "source": "/shuoshuo/%e8%be%9b%e6%b3%a2%e6%96%af%e5%8d%a1-2022-4",
+      "destination": "/blog/moments/#%E8%BE%9B%E6%B3%A2%E6%96%AF%E5%8D%A1-2022-4",
+      "permanent": true
+    },
+    {
+      "source": "/archives/212",
+      "destination": "/blog/moments/#%E8%BE%9B%E6%B3%A2%E6%96%AF%E5%8D%A1-2022-4",
+      "permanent": true
+    },
+    {
+      "source": "/shuoshuo/%e4%b9%8b%e5%89%8d-%e6%9d%a8%e4%b9%83%e6%96%87-2022-6-27",
+      "destination": "/blog/moments/#%E4%B9%8B%E5%89%8D-%E6%9D%A8%E4%B9%83%E6%96%87-2022-6-27",
+      "permanent": true
+    },
+    {
+      "source": "/archives/252",
+      "destination": "/blog/moments/#%E4%B9%8B%E5%89%8D-%E6%9D%A8%E4%B9%83%E6%96%87-2022-6-27",
+      "permanent": true
+    },
+    {
+      "source": "/archives/336",
+      "destination": "/blog/post/win11-font-blurred-solution/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/346",
+      "destination": "/blog/post/计算机基础-指令周期,机器周期,时钟周期/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/710",
+      "destination": "/blog/post/软件工程-模型/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/746",
+      "destination": "/blog/post/intel-unison初体验-pc手机互联/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/806",
+      "destination": "/blog/post/记一次apple-care-维修/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/841",
+      "destination": "/blog/post/青岛游记/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/1234",
+      "destination": "/blog/post/office激活指南/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/3919",
+      "destination": "/blog/post/2024-4-杂谈part1/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/3928",
+      "destination": "/blog/post/edge在b站播放页面出现闪屏的解决方案/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/3934",
+      "destination": "/blog/post/九月小记/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/3944",
+      "destination": "/blog/post/十月日记/",
+      "permanent": true
+    },
+    {
+      "source": "/archives/3968",
+      "destination": "/blog/post/cuda-pytorch-安装笔记/",
+      "permanent": true
+    }
+  ]
 }

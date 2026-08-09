@@ -1,0 +1,36 @@
+{
+  "source": "lchnan.WordPress.2026-08-09.xml",
+  "siteUrl": "https://blog.lchnan.cn",
+  "generatedAt": "2026-08-09T05:21:04.840Z",
+  "basePath": "blog",
+  "posts": {
+    "imported": 45,
+    "skipped": 0,
+    "draftsSkipped": 0
+  },
+  "pages": {
+    "imported": 6,
+    "skipped": 0,
+    "draftsSkipped": 0
+  },
+  "moments": {
+    "imported": 4,
+    "skipped": 0,
+    "draftsSkipped": 0
+  },
+  "media": {
+    "downloaded": 0,
+    "skipped": 115,
+    "failed": []
+  },
+  "comments": 71,
+  "redirects": 58,
+  "warnings": [
+    {
+      "wordpressId": 322,
+      "shortcodes": [
+        "[wp-rss-aggregator]"
+      ]
+    }
+  ]
+}

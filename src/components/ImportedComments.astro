@@ -1,0 +1,44 @@
+---
+import commentsByPost from '../data/wordpress-comments.json';
+
+interface ImportedComment {
+	id: number;
+	parentId: number | null;
+	author: string;
+	authorUrl: string;
+	date: string;
+	content: string;
+}
+
+const { wordpressId } = Astro.props as { wordpressId: number };
+const comments = (commentsByPost as Record<string, ImportedComment[]>)[String(wordpressId)] || [];
+---
+
+{comments.length > 0 && (
+	<section class="imported-comments">
+		<h2>历史评论 <span>{comments.length}</span></h2>
+		<ol>
+			{comments.map((comment) => (
+				<li style={`--comment-depth: ${comment.parentId ? 1 : 0}`}>
+					<header>
+						{comment.authorUrl ? <a href={comment.authorUrl} rel="nofollow ugc">{comment.author}</a> : <strong>{comment.author}</strong>}
+						<time datetime={comment.date}>{new Date(comment.date).toLocaleDateString('zh-CN')}</time>
+					</header>
+					<div class="comment-body" set:html={comment.content} />
+				</li>
+			))}
+		</ol>
+	</section>
+)}
+
+<style>
+	.imported-comments { margin-top: 3em; padding-top: 2em; border-top: 1px solid rgb(var(--sand-dark)); }
+	.imported-comments h2 { font-size: 1.2em; }
+	.imported-comments h2 span { color: rgb(var(--stone)); font-size: .8em; }
+	ol { list-style: none; padding: 0; }
+	li { margin: 1.2em 0 0 calc(var(--comment-depth) * 1.5em); padding: 1em 1.2em; background: rgb(var(--sand)); border-radius: var(--radius); }
+	header { display: flex; gap: .8em; align-items: baseline; }
+	header time { color: rgb(var(--stone)); font-size: .8em; }
+	.comment-body { margin-top: .6em; color: rgb(var(--ink-light)); line-height: 1.7; }
+	.comment-body :global(p:last-child) { margin-bottom: 0; }
+</style>
